@@ -1,11 +1,10 @@
 class SimulationController:
     """
-    Fait le lien entre le modèle (Forest) et l'interface graphique
+    Lien entre le modèle et l'interface
     """
 
     def __init__(self, forest):
         self.forest = forest
-        self.running = False
 
     def step(self):
         return self.forest.step()

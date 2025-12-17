@@ -17,12 +17,12 @@ class FeuForetApp(tk.Tk):
         self.canvas_px = 640
         self.cell_px = self.canvas_px // self.size
 
+        self.after_id = None
         self.forest = None
         self.controller = None
-        self.after_id = None
 
         self._build_ui()
-        self.reset()
+        self._create_simulation()
 
     def _build_ui(self):
         main = ttk.Frame(self, padding=10)
@@ -34,25 +34,38 @@ class FeuForetApp(tk.Tk):
         panel = ttk.Frame(main)
         panel.grid(row=0, column=1, sticky="n")
 
+        # Densité (LIVE)
         self.density = tk.DoubleVar(value=0.8)
         ttk.Label(panel, text="Densité").pack(anchor="w")
-        ttk.Scale(panel, from_=0, to=1, variable=self.density).pack(fill="x")
+        ttk.Scale(panel, from_=0, to=1, variable=self.density,
+                  command=lambda _: self._create_simulation()).pack(fill="x")
 
+        # Point de départ (LIVE)
         self.mode = tk.StringVar(value="coin")
-        ttk.Radiobutton(panel, text="Coin", variable=self.mode, value="coin").pack(anchor="w")
-        ttk.Radiobutton(panel, text="Centre", variable=self.mode, value="centre").pack(anchor="w")
-        ttk.Radiobutton(panel, text="Ligne", variable=self.mode, value="ligne").pack(anchor="w")
+        for txt, val in [("Coin", "coin"), ("Centre", "centre"), ("Ligne", "ligne")]:
+            ttk.Radiobutton(panel, text=txt, variable=self.mode, value=val,
+                            command=self._create_simulation).pack(anchor="w")
 
-        ttk.Button(panel, text="Start", command=self.start).pack(fill="x", pady=2)
-        ttk.Button(panel, text="Pause", command=self.pause).pack(fill="x", pady=2)
-        ttk.Button(panel, text="Reset", command=self.reset).pack(fill="x", pady=2)
+        # Voisinage (NOUVEAU)
+        ttk.Label(panel, text="Voisinage").pack(anchor="w", pady=(10, 0))
+        self.neighbors = tk.IntVar(value=4)
+        for txt, val in [("4 voisins", 4), ("8 voisins", 8)]:
+            ttk.Radiobutton(panel, text=txt, variable=self.neighbors, value=val,
+                            command=self._create_simulation).pack(anchor="w")
+
+        ttk.Button(panel, text="Start", command=self.start).pack(fill="x", pady=5)
+        ttk.Button(panel, text="Pause", command=self.pause).pack(fill="x")
 
         self.info = ttk.Label(panel, text="")
         self.info.pack(pady=10)
 
-    def reset(self):
+    def _create_simulation(self):
         self.pause()
-        self.forest = Forest(self.size, self.density.get())
+        self.forest = Forest(
+            self.size,
+            self.density.get(),
+            neighbors=self.neighbors.get()
+        )
         self.forest.ignite(self.mode.get())
         self.controller = SimulationController(self.forest)
         self.draw()
