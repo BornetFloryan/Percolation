@@ -1,9 +1,79 @@
-# Python
+# =========================
+# Environnements virtuels
+# =========================
+venv/
+.env/
+.env.bak/
+.venv/
+
+# =========================
+# Fichiers Python compilés
+# =========================
 __pycache__/
-*.pyc
+*.py[cod]
+*$py.class
 
-# IDE (PyCharm / IntelliJ)
+# =========================
+# Fichiers de build / dist
+# =========================
+build/
+dist/
+*.egg-info/
+
+# =========================
+# Cache d’outils
+# =========================
+.pytest_cache/
+.mypy_cache/
+.cache/
+
+# =========================
+# IDE / Éditeurs
+# =========================
+.vscode/
 .idea/
+*.swp
+*.swo
 
-# Windows
+# =========================
+# OS
+# =========================
+.DS_Store
+Thumbs.db
 desktop.ini
+
+# =========================
+# Logs & temporaires
+# =========================
+*.log
+*.tmp
+
+# =========================
+# Données générées
+# =========================
+*.csv
+*.json
+*.npy
+*.npz
+
+# =========================
+# Figures / exports
+# =========================
+*.png
+*.jpg
+*.jpeg
+*.svg
+*.pdf
+
+# =========================
+# Jupyter
+# =========================
+.ipynb_checkpoints/
+
+# =========================
+# Sécurité
+# =========================
+*.key
+*.pem
+*.env
+

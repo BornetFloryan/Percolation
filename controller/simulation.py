@@ -1,6 +1,7 @@
 class SimulationController:
     """
-    Lien entre le modèle et l'interface
+    Contrôleur temps réel : Start / Pause / Restart
+    Le modèle Forest contient l'état.
     """
 
     def __init__(self, forest):
@@ -9,9 +10,11 @@ class SimulationController:
     def step(self):
         return self.forest.step()
 
-    def stats(self):
+    def metrics(self):
         return {
             "iteration": self.forest.iteration,
-            "burned": self.forest.burned_percentage(),
-            "reached": self.forest.reached_bottom_right(),
+            "burned_count": self.forest.burned_count(),
+            "burned_fraction": self.forest.burned_fraction(),
+            "frontier": self.forest.burned_frontier_count(),
+            "percolates": self.forest.percolates(),
         }
